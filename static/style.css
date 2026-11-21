@@ -3782,3 +3782,100 @@ h1, h2, h3, h4, h5, h6, .hero-title, .brand-title, .brand-sub, .has-name, .autho
 .device-spec-box li strong {
   color: #f8fafc;
 }
+
+/* Pre-Flight & Troubleshooting Enhancements for E-E-A-T and AdSense Quality */
+.preflight-card {
+  margin: 28px 0;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(245, 158, 11, 0.04);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-left: 5px solid #f59e0b;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.5);
+}
+.preflight-card h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  color: #fbbf24;
+  letter-spacing: -0.01em;
+}
+.preflight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+.preflight-item {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+}
+.preflight-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.preflight-item p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+.preflight-item code {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+
+.troubleshooting-card {
+  margin: 28px 0;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+}
+.troubleshooting-card h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  color: #38bdf8;
+  letter-spacing: -0.01em;
+}
+.troubleshooting-item {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.troubleshooting-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.troubleshooting-item h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+}
+.troubleshooting-item p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+.troubleshooting-item p strong {
+  color: #e2e8f0;
+}
+.troubleshooting-item code {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+

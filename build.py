@@ -1366,6 +1366,7 @@ def page(title, description, body, path="", extra_head="", keywords="",
     <a href="%scontact.html">Contact</a>
     <a href="%sprivacy.html">Privacy</a>
     <a href="%sterms.html">Terms</a>
+    <a href="%sdisclaimer.html">Disclaimer</a>
     <a href="%sdownload.html">Download Tool</a>
     <a href="%sdownloader.html">ROM Downloader</a>
     <a href="%sdonate.html">Support Us</a>
@@ -1374,11 +1375,11 @@ def page(title, description, body, path="", extra_head="", keywords="",
     <button type="button" class="footlink" data-consent-open>Cookie settings</button>
   </nav>
   <p class="dis">Not affiliated with Xiaomi, POCO, Redmi or any ROM project.
-  Flashing is at your own risk &mdash; read the <a href="%sterms.html">terms</a> first.</p>
+  Flashing is at your own risk &mdash; read the <a href="%sdisclaimer.html">disclaimer</a> and <a href="%sterms.html">terms</a> first.</p>
 </div></footer>
 </body>
 </html>
-""" % (SITE, TAGLINE, browse, up, up, up, up, up, up, up, up, CHANNEL_URL, up)
+""" % (SITE, TAGLINE, browse, up, up, up, up, up, up, up, up, up, CHANNEL_URL, up, up)
 
     # the pointer light is moved by a script, so it belongs at the end of body
     foot = foot.replace("</body>", NAV_JS + "\n" + VIDEO_JS + "\n</body>")
@@ -2426,12 +2427,56 @@ def build_article(item, items):
     )
     out.append(author_card_html)
 
-    out.append('<div class="links"><h2>Before you flash</h2><ul>' 
-               "<li>Back up everything you would miss &mdash; unlocking and "
-               "flashing usually wipe the phone.</li>"
-               "<li>Check the file is built for your exact model and region.</li>"
-               "<li>Keep a PC and a working cable around so a bootloop can be "
-               "recovered.</li></ul></div>")
+    preflight_html = (
+        '<div class="preflight-card">'
+        '<h2>&#9888;&#65039; Pre-Flight Hardware Checks &amp; Safety Protocol</h2>'
+        '<div class="preflight-grid">'
+        '<div class="preflight-item">'
+        '<div class="preflight-badge">1. Battery &gt; 50% Threshold</div>'
+        '<p>Never flash on a low battery. If the device powers down during critical partition operations (such as <code>super</code>, <code>boot</code>, or <code>init_boot</code>), filesystem corruption occurs instantly, causing an unbootable hard brick.</p>'
+        '</div>'
+        '<div class="preflight-item">'
+        '<div class="preflight-badge">2. High-Speed Data Cable</div>'
+        '<p>Always utilize a verified, high-speed USB data cable plugged directly into a primary motherboard USB 2.0/3.0 port. Avoid loose adapters, faulty cables, or unpowered hubs that can drop I/O packets mid-flash.</p>'
+        '</div>'
+        '<div class="preflight-item">'
+        '<div class="preflight-badge">3. Regional Codename Verification</div>'
+        '<p>Confirm that your exact hardware variant matches this guide. Flashing a package intended for another regional variant (e.g. flashing Global firmware onto an Indian hardware revision) can destroy modem calibrations and baseband NVRAM/EFS.</p>'
+        '</div>'
+        '<div class="preflight-item">'
+        '<div class="preflight-badge">4. Complete Off-Device Backup</div>'
+        '<p>Unlocking bootloaders and clean flashing custom ROMs triggers cryptographic hardware wiping. Back up photos, documents, and 2FA authentication tokens to an external drive or cloud storage before beginning.</p>'
+        '</div>'
+        '</div></div>'
+    )
+    out.append(preflight_html)
+
+    troubleshooting_html = (
+        '<div class="troubleshooting-card">'
+        '<h2>&#128295; Fastboot &amp; Recovery Troubleshooting Matrix</h2>'
+        '<div class="troubleshooting-item">'
+        '<h3>&ldquo;waiting for any device&rdquo; in Terminal</h3>'
+        '<p><strong>Cause:</strong> Fastboot USB drivers are missing or Windows assigned a generic MTP driver.<br>'
+        '<strong>Solution:</strong> Open Windows Device Manager while your phone is in Fastboot mode. If an exclamation mark appears under <em>Other devices &rarr; Android</em>, select Update driver &rarr; Browse my computer &rarr; Let me pick &rarr; select <strong>Android Bootloader Interface</strong>.</p>'
+        '</div>'
+        '<div class="troubleshooting-item">'
+        '<h3>FAILED (remote: &lsquo;Flashing is not allowed in Lock State&rsquo;)</h3>'
+        '<p><strong>Cause:</strong> Device bootloader is locked or was re-locked by mistake.<br>'
+        '<strong>Solution:</strong> Custom partitions cannot be written to a locked bootloader. Complete the official vendor bootloader unlock workflow and verify status by executing <code>fastboot getvar unlocked</code> (must return <code>yes</code>).</p>'
+        '</div>'
+        '<div class="troubleshooting-item">'
+        '<h3>FAILED (remote: &lsquo;Partition not found&rsquo; or &lsquo;No such partition&rsquo;)</h3>'
+        '<p><strong>Cause:</strong> Attempting to write dynamic logical partitions (like <code>system</code>, <code>vendor</code>, or <code>product</code>) in standard bootloader mode.<br>'
+        '<strong>Solution:</strong> Modern Android devices use dynamic partitions. Execute <code>fastboot reboot fastboot</code> to switch into userspace <strong>fastbootd</strong> mode before flashing logical partitions.</p>'
+        '</div>'
+        '<div class="troubleshooting-item">'
+        '<h3>Stuck in Bootloop or Continually Boots Back into Recovery</h3>'
+        '<p><strong>Cause:</strong> The existing encrypted <code>/data</code> filesystem is incompatible with the new ROM encryption keys.<br>'
+        '<strong>Solution:</strong> Boot into custom recovery (TWRP/OrangeFox), select <strong>Wipe &rarr; Format Data</strong>, type &ldquo;yes&rdquo;, and reboot. Never dirty-flash between distinct ROM bases without formatting <code>/data</code>.</p>'
+        '</div>'
+        '</div>'
+    )
+    out.append(troubleshooting_html)
 
     device = clean_device(item.get("device"))
     family = rom_family_of(item)
@@ -4076,6 +4121,53 @@ information from children.</p>
                                          "url": SITE_URL},
                             "dateModified": BUILT_ON})
 
+    disclaimer_html_content = """
+<p class="dis">Last updated: {built_on}. Please read this Hardware &amp; Software Modification Disclaimer carefully before utilizing any tools, fastboot scripts, recovery images, or technical tutorials published on <strong>Rom Flasher</strong>.</p>
+
+<h2>1. Independent Technical Publication &amp; Non-Affiliation</h2>
+<p>Rom Flasher (<a href="{site}">{site}</a>) is an independent engineering research portal and utility software provider authored and developed by Rohit Verma. Rom Flasher is <strong>not affiliated, associated, authorized, endorsed by, or in any way officially connected</strong> with Xiaomi Inc., POCO, Redmi, Google LLC, the Android Open Source Project (AOSP), Qualcomm Technologies Inc., MediaTek Inc., or any other mobile device hardware or operating system vendor. All product names, official logos, brand identities, and registered trademarks cited on this platform are the exclusive intellectual property of their respective holders. Nominative references on this site exist solely for device identification, technical accuracy, and educational evaluation.</p>
+
+<h2>2. Inherent Risks of Android Firmware &amp; Kernel Modification</h2>
+<p>Flashing third-party custom ROMs (such as LineageOS, PixelOS, Evolution X), unlocking bootloaders, flashing custom kernels (KernelSU/Magisk), writing dynamic partitions (<code>fastbootd</code>), and executing root workflows carry substantial and irreversible technical risks. By following any documentation on Rom Flasher, you expressly acknowledge and accept that:</p>
+<ul>
+  <li><strong>Permanent Hardware Damage (&ldquo;Hard Bricking&rdquo;):</strong> Writing an incompatible partition image, selecting the wrong regional firmware package, interrupting a low-level fastboot command, or flashing with an unstable USB connection can corrupt primary bootloader partitions (e.g., <code>xbl</code>, <code>abl</code>, <code>boot</code>, <code>init_boot</code>, <code>super</code>). This can render your mobile hardware permanently unbootable (&ldquo;hard-bricked&rdquo;), requiring specialized authorized OEM EDL (Emergency Download Mode) service.</li>
+  <li><strong>Irreversible Cryptographic Data Erasure:</strong> Unlocking an Android bootloader triggers a cryptographic hardware wipe that erases the <code>userdata</code> and <code>metadata</code> partitions. Clean flashing any custom ROM destroys all local files, apps, call logs, photos, and encryption tokens. You must independently create, verify, and store external off-device backups before executing any procedure.</li>
+  <li><strong>Manufacturer Warranty Forfeiture:</strong> Unlocking a device's bootloader or flashing unsigned firmware images alters tamper-evident security flags (such as Qualcomm TEE state, Samsung Knox bit, or OEM AVB locks). In most jurisdictions, these modifications void the manufacturer and carrier hardware warranty.</li>
+  <li><strong>Security State, DRM &amp; Banking Degradation:</strong> Disabling Android Verified Boot (AVB 2.0) and modifying system partitions may permanently degrade DRM Widevine certification from Level 1 (L1) to Level 3 (L3), restricting streaming resolution on platforms like Netflix and Amazon Prime. Furthermore, device integrity attestations (Google Play Integrity API) may fail, causing high-security banking, financial, and UPI applications to cease functioning.</li>
+</ul>
+
+<h2>3. Pre-Flight Safety Protocol &amp; Technical Requirements</h2>
+<p>To mitigate the risk of flashing failure, you agree to observe the following technical safety requirements prior to executing any command:</p>
+<ol>
+  <li><strong>Verify Exact Hardware Codename:</strong> Never flash firmware intended for another regional variant. For instance, a ROM built for POCO X7 Pro (Indian codename: <code>rodin_in</code>) must never be written to a differing hardware revision without explicit vendor confirmation.</li>
+  <li><strong>Anti-Rollback (ARB) Protection:</strong> Xiaomi and POCO bootloaders enforce hardware Anti-Rollback index checks. Attempting to flash an older firmware release with a lower ARB index than your current system will instantly hard-brick the device at the bootloader level.</li>
+  <li><strong>Power Supply &amp; Cable Integrity:</strong> Ensure your mobile device maintains at least a <strong>50% battery charge</strong> before initiating any fastboot or sideload workflow. A battery failure during partition writing leads to immediate filesystem corruption. Always utilize a high-quality, high-speed USB data cable plugged directly into a primary motherboard USB port (avoid unpowered USB hubs or loose adapters).</li>
+  <li><strong>Driver Environment Verification:</strong> Confirm that official Google/OEM Android Bootloader Interface drivers are installed on your host PC and that the terminal successfully returns a valid serial identifier upon running <code>fastboot devices</code>.</li>
+</ol>
+
+<h2>4. "As-Is" Provision &amp; Limitation of Liability</h2>
+<p>All tutorials, open-source utilities (including the Rom Flasher Android tool), fastboot sequences, recovery instructions, and diagnostic advice on this site are provided on an <strong>&ldquo;as-is&rdquo; and &ldquo;as-available&rdquo; basis without warranties of any kind</strong>, either express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+<p>Under no legal theory (whether in contract, tort, negligence, or strict liability) shall Rom Flasher, its publisher Rohit Verma, or any associated contributors be liable for any direct, indirect, incidental, special, consequential, or punitive damages—including but not limited to damaged equipment, lost data, system downtime, loss of profits, or personal inconvenience—resulting from your reliance on or execution of any instructions or files obtained through this website.</p>
+
+<h2>5. Editorial Integrity &amp; External Resource Verification</h2>
+<p>While every technical tutorial published on Rom Flasher is verified on physical hardware in our testing lab, manufacturer firmware specifications, partition layouts, and fastboot protocols may change dynamically across OEM OTA updates. Readers are strictly advised to cross-reference official cryptographic checksums (SHA-256) on all downloaded firmware archives prior to flashing. External download mirrors are provided for convenience, and Rom Flasher does not host, modify, or assume responsibility for third-party files.</p>
+""".format(site=SITE_URL, built_on=BUILT_ON)
+
+    out["disclaimer.html"] = simple("disclaimer.html", "Hardware & Software Modification Disclaimer",
+                                    "Disclaimer \u2014 %s" % SITE,
+                                    disclaimer_html_content,
+                                    description="Comprehensive Hardware Risk and Firmware Modification Disclaimer for Rom Flasher: liability boundaries, bootloader risks, and pre-flight safety protocols.",
+                                    schema={
+                                        "@context": "https://schema.org",
+                                        "@type": "WebPage",
+                                        "name": "Disclaimer",
+                                        "url": "%s/disclaimer.html" % SITE_URL,
+                                        "inLanguage": "en",
+                                        "isPartOf": {"@type": "WebSite", "name": SITE,
+                                                     "url": SITE_URL},
+                                        "dateModified": BUILT_ON})
+
+
     contact_html_content = """
 <div class="contact-info-card">
   <h2>Direct Publisher &amp; Editorial Contact</h2>
@@ -4352,6 +4444,7 @@ def main():
                    ("contact.html", "0.6", "monthly", BUILT_ON),
                    ("privacy.html", "0.4", "yearly", BUILT_ON),
                    ("terms.html", "0.4", "yearly", BUILT_ON),
+                   ("disclaimer.html", "0.5", "yearly", BUILT_ON),
                    ("donate.html", "0.4", "monthly", BUILT_ON)]
     entries = ['<url><loc>%s/%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq>'
                '<priority>%s</priority></url>' % (SITE_URL, u, lm, cf, pr)
@@ -4377,7 +4470,7 @@ def main():
     write("_headers", SECURITY_HEADERS)
 
     print("[OK] %d guide(s) -> dist/" % len(items))
-    print("     index, videos, download, apps/about/privacy/terms/contact/404,")
+    print("     index, videos, download, apps/about/privacy/terms/disclaimer/contact/404,")
     print("     %d x rom/*.html, %d device page(s)," % (len(items), len(hubs)))
     print("     sitemap.xml, robots.txt, feed.xml, static/")
 
