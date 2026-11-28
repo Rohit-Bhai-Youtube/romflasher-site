@@ -92,8 +92,8 @@ if GOOGLE_FILE_NAME and not GOOGLE_FILE_NAME.endswith(".html"):
 # that file must contain the key itself. Any hex string will do; set
 # ROMFLASHER_INDEXNOW to the same value used when pinging the endpoint.
 INDEXNOW_KEY = os.environ.get("ROMFLASHER_INDEXNOW", "").strip()
-TOOL_URL = "https://github.com/romflasher3419-spec/rom-flasher-tool/releases/latest"
-REPO_URL = "https://github.com/romflasher3419-spec/rom-flasher-tool"
+TOOL_URL = "https://github.com/Rohit-Bhai-Youtube/rom-flasher-tool/releases/latest"
+REPO_URL = "https://github.com/Rohit-Bhai-Youtube/rom-flasher-tool"
 CHANNEL_URL = "https://www.youtube.com/@Rom_Flasher"
 FB_URL = "https://www.facebook.com/people/Rom-Flasher/61595961834517/"
 IG_URL = "https://www.instagram.com/romflasheryt"
@@ -104,11 +104,11 @@ APK_URL = REPO_URL + "/releases/latest/download/app-release.apk"
 RELEASES_URL = REPO_URL + "/releases"
 
 APP = {
-    "version": "v1.5.0",
-    "released": "11 Nov 2026",
-    "size": "18.4 MB",
-    "bytes": "19258136",
-    "sha256": "118087AC14F84DD55679C59205E4F3D4DCAE96685D93D3C08EA6595D87397219",
+    "version": "v1.6.0",
+    "released": "28 Nov 2026",
+    "size": "9.3 MB",
+    "bytes": "9703742",
+    "sha256": "9F6DC1B4E6FFF0A3BBF71DB1950BAC26690661742A0B50C9C92BCAF06F0741F3",
     "android": "Android 8.0 or newer",
 }
 
@@ -2989,12 +2989,12 @@ the three I actually keep in the drawer.</p>
 {gear}
 
 <h2>Fresh in {ver}</h2>
-<p>Version 1.5.0 refines the interface with clean English-only copy and Liquid Glass polish:</p>
+<p>Version 1.6.0 brings a true Liquid Glass UI overhaul, 120Hz smooth motion, and major core stability upgrades:</p>
 <ul>
-  <li><b>English-Only Experience:</b> Removed Hinglish strings and the language switcher popup across the app for cleaner, uniform clarity.</li>
-  <li><b>Liquid Glass Update Gate:</b> Upgraded the in-app update popup with frosted Liquid Glass cards, pills, and clean changelog scrolling.</li>
-  <li><b>Unified Section Spacing:</b> Aligned the Root tab top header-to-card spacing cleanly to match the Tools section.</li>
-  <li><b>Core Engine Stability:</b> Verified VBMeta Disabler, GSI Flasher, and zero-touch recovery sideload engines on release builds.</li>
+  <li><b>True Liquid Glass Dock &amp; 120Hz Smoothness:</b> Live backdrop refraction lens with haptic drag ticks, adaptive frame-synced expand-scroll across all cards, floating live operation pill, and spring dialog transitions.</li>
+  <li><b>My Projects Live Showcase:</b> New My Projects chip displaying live auto-synced public GitHub repositories with direct browser launch.</li>
+  <li><b>Background Protection &amp; USB Fixes:</b> Added ForegroundService + WakeLock during flashing/extraction, MediaTek &amp; Samsung USB filters, Android 14+ USB permission fixes, and fastbootd re-enumeration support.</li>
+  <li><b>Brick-Safety &amp; Engine Hardening:</b> MediaTek VBMeta safety guard, active-slot-only GSI cleanup, streaming EFS backups (no OOM), KernelSU su-variant reuse, and stricter FastExtractor / PayloadDumper error handling.</li>
 </ul>
 
 <h2>Questions people ask</h2>
